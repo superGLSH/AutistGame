@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <windows.h>
+#include <conio.h>
 using namespace std;
 enum Race
 {
@@ -18,7 +19,7 @@ enum Gender
 };
 enum Move
 {
-	stop = 0, up, down, left, right
+	Stop = 0, Up, Down, Left, Right
 };
 bool gameover{ false };
 bool Flag(true);
@@ -32,10 +33,10 @@ struct Charaster
 	Race chRace{};
 	_Class chClass{};
 	Gender chGender{};
-	Move chMove{};
+	Move chMove{Stop};
 	double atack{}, HP{};
-	char chSuin{ '☺' };
-	int x = 1, y = 1;
+	char chSuin{ '0' };
+	int x = 5, y = 5;
 };
 
 Charaster ch;
@@ -119,7 +120,20 @@ void Setup()
 }
 void Input()
 {
-
+	if (_kbhit() ==true)
+	{
+		switch (_getch())
+		{
+		case 'a': ch.chMove = Left;
+			break;
+		case 's': ch.chMove = Down;
+			break;
+		case 'd': ch.chMove = Right;
+			break;
+		case 'w': ch.chMove = Up;
+			break;
+		}
+	}
 }
 void Logic()
 {
@@ -147,13 +161,13 @@ void DrawMap(string mapName)
 	}
 	for (int i = 0; i < maphight; ++i)
 	{
-		for (int j = 0; j < mapwidth; ++i)
+		for (int j = 0; j < mapwidth; ++j)
 		{ 
 			if ((i == ch.x) && (j == ch.y))
 			{
 				currentMap[i][j] = ch.chSuin;
 			}
-			cout << currentMap[i] << '\n';
 		}
+		cout << currentMap[i] << '\n';
 	}
 }
