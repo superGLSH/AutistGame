@@ -36,7 +36,7 @@ struct Charaster
 	Move chMove{Stop};
 	double atack{}, HP{};
 	char chSuin{ '0' };
-	int x = 5, y = 5;
+	int x = 1, y = 1;
 };
 
 Charaster ch;
@@ -48,6 +48,11 @@ void DrawMap(string CurrentMap);
 int main()
 {
 	Setup();
+	while (gameover == false)
+	{
+		Input();
+		Logic();
+	}
 }
 void Setup()
 {
@@ -137,11 +142,92 @@ void Input()
 }
 void Logic()
 {
+	switch (ch.chMove)
+	{
+	case Left:
+		if (currentMap[ch.x][ch.y-1] == ' ')
+		{
+			--ch.y;
+			currentMap[ch.x][ch.y+1] = ' ';
+			DrawMap(mapName);
+			break;
+		}
+		else if (currentMap[ch.x][ch.y - 1] == '9')
+		{
+			mapName = "House.txt";
+			Flag = true;
+			ch.x = 1;
+			ch.y = 1;
+			currentMap.clear();
+			DrawMap(mapName);
+			break;
+		}
+		break;
+	case Right:
+		if(currentMap[ch.x][ch.y+1] == ' ')
+		{
+			++ch.y;
+			currentMap[ch.x][ch.y-1] = ' ';
+			DrawMap(mapName);
+			break;
+		}
+		else if (currentMap[ch.x][ch.y + 1] == '9')
+		{
+			mapName = "House.txt";
+			Flag = true;
+			ch.x = 1;
+			ch.y = 1;
+			currentMap.clear();
+			DrawMap(mapName);
+			break;
+		}
+		break;
+	case Down:
+		if(currentMap[ch.x+1][ch.y] == ' ')
+		{
+			++ch.x;
+			currentMap[ch.x-1][ch.y] = ' ';
+			DrawMap(mapName);
+			break;
+		}
+		else if (currentMap[ch.x + 1][ch.y] == '9')
+		{
+			mapName = "House.txt";
+			Flag = true;
+			ch.x = 1;
+			ch.y = 1;
+			currentMap.clear();
+			DrawMap(mapName);
+			break;
+		}
+		break;
+
+	case Up:
+		if (currentMap[ch.x - 1][ch.y] == ' ')
+		{
+			--ch.x;
+			currentMap[ch.x + 1][ch.y] = ' ';
+			DrawMap(mapName);
+			break;
+		}
+		else if (currentMap[ch.x - 1][ch.y] == '9') 
+		{
+			mapName = "House.txt";
+			Flag = true;
+			ch.x = 1;
+			ch.y = 1;
+			currentMap.clear();
+			DrawMap(mapName);
+			break;
+		}
+		break;
+
+	}
+	ch.chMove = Stop;
 
 }
 void DrawMap(string mapName)
 {
-	int maphight, mapwidth;
 	system("cls");
 	if (Flag == true)
 	{
@@ -156,12 +242,10 @@ void DrawMap(string mapName)
 			currentMap.push_back(str);
 		}
 		Flag = false;
-		maphight = currentMap.size();
-		mapwidth = currentMap.back().size();
 	}
-	for (int i = 0; i < maphight; ++i)
+	for (int i = 0; i < currentMap.size(); ++i)
 	{
-		for (int j = 0; j < mapwidth; ++j)
+		for (int j = 0; j < currentMap.back().size(); ++j)
 		{ 
 			if ((i == ch.x) && (j == ch.y))
 			{
